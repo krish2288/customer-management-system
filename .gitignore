@@ -1,0 +1,68 @@
+# =========================
+# Angular / Node
+# =========================
+frontend/node_modules/
+frontend/dist/
+frontend/.angular/
+frontend/.cache/
+frontend/.vscode/
+frontend/*.log
+
+
+# =========================
+# Spring Boot / Maven
+# =========================
+backend/target/
+backend/out/
+backend/HELP.md
+backend/.mvn/timing.properties
+
+# =========================
+# IDEs
+# =========================
+.idea/
+.vscode/
+*.iws
+*.iml
+*.ipr
+
+# Eclipse / STS
+.apt_generated/
+.classpath
+.factorypath
+.project
+.settings/
+.springBeans
+.sts4-cache/
+
+# NetBeans
+nbproject/private/
+nbbuild/
+nbdist/
+.nb-gradle/
+build/
+
+# =========================
+# Java Generated Files
+# =========================
+*.class
+
+# =========================
+# Logs
+# =========================
+*.log
+logs/
+
+# =========================
+# Environment / Secrets
+# =========================
+.env
+.env.*
+!.env.example
+
+# =========================
+# OS Generated Files
+# =========================
+.DS_Store
+Thumbs.db
+desktop.ini
