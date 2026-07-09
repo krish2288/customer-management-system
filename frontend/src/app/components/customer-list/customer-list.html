@@ -1,0 +1,127 @@
+<section class="panel customer-list-card">
+  <div class="panel-header panel-header--list">
+    <div class="panel-title">
+      <span class="panel-title__icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24">
+          <path
+            d="M8.5 11.5A3.5 3.5 0 1 0 8.5 4a3.5 3.5 0 0 0 0 7.5Zm7-1A3 3 0 1 0 15.5 4a3 3 0 0 0 0 6.5ZM8.5 13C5.5 13 2 14.52 2 17.5V20h13v-2.5C15 14.52 11.5 13 8.5 13Zm7-.7c-.64 0-1.32.08-2.01.24 1.77.95 3.01 2.45 3.01 4.96V20H22v-2.25c0-2.79-3.31-5.45-6.5-5.45Z"
+          />
+        </svg>
+      </span>
+      <h2>Customer List</h2>
+    </div>
+
+    <div class="list-controls">
+      <select class="status-filter" aria-label="Filter customers by status" [value]="statusFilter" (change)="onStatusFilterChange($event)">
+        <option value="ALL">All Status</option>
+        <option value="ACTIVE">Active</option>
+        <option value="INACTIVE">Inactive</option>
+      </select>
+      <button class="button button--primary" type="button" [disabled]="loading || refreshing" (click)="refresh()">
+        @if (refreshing) {
+          <span class="spinner spinner--light" aria-hidden="true"></span>
+        } @else {
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M17.65 6.35A7.95 7.95 0 0 0 12 4a8 8 0 1 0 7.45 10.9h-2.13A6 6 0 1 1 12 6c1.66 0 3.14.69 4.22 1.78L13 11h8V3l-3.35 3.35Z" />
+          </svg>
+        }
+        Refresh
+      </button>
+    </div>
+  </div>
+
+  <div class="search-row">
+    <label class="search-box">
+      <input
+        type="search"
+        placeholder="Search by name, email or mobile..."
+        [value]="searchQuery"
+        (input)="onSearchInput($event)"
+      />
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="m19.6 21-6.3-6.3A7 7 0 1 1 15 13.3l6.3 6.3-1.7 1.4ZM9.5 14A4.5 4.5 0 1 0 9.5 5a4.5 4.5 0 0 0 0 9Z" />
+      </svg>
+    </label>
+  </div>
+
+  <div class="table-shell">
+    <table class="customer-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Customer ID</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Mobile Number</th>
+          <th>City</th>
+          <th>State</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        @if (loading) {
+          <tr>
+            <td colspan="9" class="empty-cell">Loading customers...</td>
+          </tr>
+        } @else if (paginatedCustomers.length === 0) {
+          <tr>
+            <td colspan="9" class="empty-cell">No customers found.</td>
+          </tr>
+        } @else {
+          @for (customer of paginatedCustomers; track customer.customerId; let index = $index) {
+            <tr>
+              <td>{{ showingStart + index }}</td>
+              <td>{{ customer.customerId }}</td>
+              <td>{{ getCustomerName(customer) }}</td>
+              <td>{{ customer.email }}</td>
+              <td>{{ customer.mobileNumber }}</td>
+              <td>{{ customer.city }}</td>
+              <td>{{ customer.state }}</td>
+              <td>
+                <span class="status-badge" [class.status-badge--active]="customer.status === 'ACTIVE'" [class.status-badge--inactive]="customer.status === 'INACTIVE'">
+                  {{ customer.status === 'ACTIVE' ? 'Active' : 'Inactive' }}
+                </span>
+              </td>
+              <td>
+                <div class="action-buttons">
+                  <button class="table-action table-action--edit" type="button" title="Edit customer" aria-label="Edit customer" (click)="edit(customer)">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M4 17.25V21h3.75L18.8 9.95l-3.75-3.75L4 17.25ZM20.7 8.05c.4-.4.4-1 0-1.4l-2.35-2.35a.99.99 0 0 0-1.4 0l-1.85 1.85 3.75 3.75 1.85-1.85Z" />
+                    </svg>
+                  </button>
+                  <button class="table-action table-action--delete" type="button" title="Delete customer" aria-label="Delete customer" (click)="delete(customer)">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M9 3h6l1 2h4v2H4V5h4l1-2Zm-3 6h12l-.75 12H6.75L6 9Zm4 2v8h2v-8h-2Zm4 0v8h2v-8h-2Z" />
+                    </svg>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <div class="pagination-row">
+    <p>Showing {{ showingStart }} to {{ showingEnd }} of {{ totalEntries }} entries</p>
+    <nav class="pagination" aria-label="Customer list pagination">
+      <button class="page-button" type="button" aria-label="Previous page" [disabled]="currentPage === 1" (click)="goToPreviousPage()">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="m15.4 7.4-1.4-1.4-6 6 6 6 1.4-1.4-4.6-4.6 4.6-4.6Z" />
+        </svg>
+      </button>
+      @for (page of pageNumbers; track page) {
+        <button class="page-button" type="button" [class.page-button--active]="page === currentPage" (click)="goToPage(page)">
+          {{ page }}
+        </button>
+      }
+      <button class="page-button" type="button" aria-label="Next page" [disabled]="currentPage === totalPages" (click)="goToNextPage()">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="m8.6 16.6 4.6-4.6-4.6-4.6L10 6l6 6-6 6-1.4-1.4Z" />
+        </svg>
+      </button>
+    </nav>
+  </div>
+</section>

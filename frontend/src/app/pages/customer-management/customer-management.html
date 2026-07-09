@@ -1,0 +1,58 @@
+<div class="app-shell">
+  <app-header></app-header>
+  <app-toast></app-toast>
+
+  <main class="page-content">
+    <section class="panel customer-details-card" #formSection>
+      <div class="panel-header">
+        <div class="panel-title">
+          <span class="panel-title__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <path
+                d="M8.5 11.5A3.5 3.5 0 1 0 8.5 4a3.5 3.5 0 0 0 0 7.5Zm7-1A3 3 0 1 0 15.5 4a3 3 0 0 0 0 6.5ZM8.5 13C5.5 13 2 14.52 2 17.5V20h13v-2.5C15 14.52 11.5 13 8.5 13Zm7-.7c-.64 0-1.32.08-2.01.24 1.77.95 3.01 2.45 3.01 4.96V20H22v-2.25c0-2.79-3.31-5.45-6.5-5.45Z"
+              />
+            </svg>
+          </span>
+          <h2>Customer Details</h2>
+        </div>
+
+        <button class="button button--primary button--add" type="button" (click)="addNewCustomer()">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M11 5h2v6h6v2h-6v6h-2v-6H5v-2h6V5Z" />
+          </svg>
+          Add New Customer
+        </button>
+      </div>
+
+      <app-customer-form
+        [customer]="editingCustomer"
+        [isSaving]="isSavingCustomer"
+        [resetCounter]="formResetCounter"
+        (saveCustomer)="saveCustomer($event)"
+        (cancelCustomer)="cancelForm()"
+      ></app-customer-form>
+    </section>
+
+    <app-customer-list
+      [customers]="customers"
+      [loading]="isLoadingCustomers"
+      [refreshing]="isRefreshing"
+      (editCustomer)="editCustomer($event)"
+      (deleteCustomer)="requestDeleteCustomer($event)"
+      (refreshCustomers)="refreshCustomers()"
+    ></app-customer-list>
+  </main>
+
+  <app-footer></app-footer>
+
+  <app-confirmation-modal
+    [isOpen]="customerPendingDelete !== null"
+    [isProcessing]="isDeletingCustomer"
+    title="Delete Customer"
+    [message]="deleteConfirmationMessage"
+    confirmText="Delete"
+    cancelText="Cancel"
+    (confirmed)="confirmDeleteCustomer()"
+    (cancelled)="cancelDeleteCustomer()"
+  ></app-confirmation-modal>
+</div>

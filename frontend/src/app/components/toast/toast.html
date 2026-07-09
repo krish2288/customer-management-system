@@ -1,0 +1,26 @@
+<div class="toast-stack" aria-live="polite" aria-atomic="true">
+  @for (toast of messages(); track toast.id) {
+    <div
+      class="toast"
+      [class.toast--success]="toast.type === 'success'"
+      [class.toast--error]="toast.type === 'error'"
+      [class.toast--info]="toast.type === 'info'"
+    >
+      <span class="toast__icon" aria-hidden="true">
+        @if (toast.type === 'success') {
+          <svg viewBox="0 0 24 24"><path d="m9.2 16.6-4.3-4.3 1.4-1.4 2.9 2.9 8.5-8.5 1.4 1.4-9.9 9.9Z" /></svg>
+        } @else if (toast.type === 'error') {
+          <svg viewBox="0 0 24 24"><path d="M11 7h2v7h-2V7Zm0 9h2v2h-2v-2Zm1-14 10 18H2L12 2Z" /></svg>
+        } @else {
+          <svg viewBox="0 0 24 24"><path d="M11 10h2v7h-2v-7Zm0-3h2v2h-2V7Zm1-5a10 10 0 1 0 0 20 10 10 0 0 0 0-20Z" /></svg>
+        }
+      </span>
+      <span class="toast__message">{{ toast.message }}</span>
+      <button class="toast__close" type="button" aria-label="Dismiss notification" (click)="removeToast(toast.id)">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="m6.4 5 5.6 5.6L17.6 5 19 6.4 13.4 12l5.6 5.6-1.4 1.4-5.6-5.6L6.4 19 5 17.6l5.6-5.6L5 6.4 6.4 5Z" />
+        </svg>
+      </button>
+    </div>
+  }
+</div>

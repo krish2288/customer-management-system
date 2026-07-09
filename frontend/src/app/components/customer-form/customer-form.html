@@ -1,0 +1,184 @@
+<form class="customer-form" [formGroup]="customerForm" (ngSubmit)="submitForm()" novalidate>
+  <div class="form-grid">
+    <div class="form-field">
+      <label for="firstName">1. First Name <span>*</span></label>
+      <input
+        #firstNameInput
+        id="firstName"
+        type="text"
+        formControlName="firstName"
+        placeholder="Enter first name"
+        [class.invalid]="isFieldInvalid('firstName')"
+      />
+      @if (isFieldInvalid('firstName')) {
+        <p class="field-error">{{ getErrorMessage('firstName') }}</p>
+      }
+    </div>
+
+    <div class="form-field">
+      <label for="lastName">2. Last Name <span>*</span></label>
+      <input
+        id="lastName"
+        type="text"
+        formControlName="lastName"
+        placeholder="Enter last name"
+        [class.invalid]="isFieldInvalid('lastName')"
+      />
+      @if (isFieldInvalid('lastName')) {
+        <p class="field-error">{{ getErrorMessage('lastName') }}</p>
+      }
+    </div>
+
+    <div class="form-field">
+      <label for="email">3. Email <span>*</span></label>
+      <input
+        id="email"
+        type="email"
+        formControlName="email"
+        placeholder="Enter email"
+        [class.invalid]="isFieldInvalid('email')"
+      />
+      @if (isFieldInvalid('email')) {
+        <p class="field-error">{{ getErrorMessage('email') }}</p>
+      }
+    </div>
+
+    <div class="form-field">
+      <label for="mobileNumber">4. Mobile Number <span>*</span></label>
+      <input
+        id="mobileNumber"
+        type="tel"
+        formControlName="mobileNumber"
+        placeholder="Enter mobile number"
+        inputmode="numeric"
+        [class.invalid]="isFieldInvalid('mobileNumber')"
+      />
+      @if (isFieldInvalid('mobileNumber')) {
+        <p class="field-error">{{ getErrorMessage('mobileNumber') }}</p>
+      }
+    </div>
+
+    <div class="form-field">
+      <label for="dateOfBirth">5. Date of Birth <span>*</span></label>
+      <input
+        id="dateOfBirth"
+        type="date"
+        formControlName="dateOfBirth"
+        [class.invalid]="isFieldInvalid('dateOfBirth')"
+      />
+      @if (isFieldInvalid('dateOfBirth')) {
+        <p class="field-error">{{ getErrorMessage('dateOfBirth') }}</p>
+      }
+    </div>
+
+    <div class="form-field">
+      <label for="gender">6. Gender <span>*</span></label>
+      <select id="gender" formControlName="gender" [class.invalid]="isFieldInvalid('gender')">
+        <option value="">Select gender</option>
+        @for (gender of genderOptions; track gender) {
+          <option [value]="gender">{{ gender }}</option>
+        }
+      </select>
+      @if (isFieldInvalid('gender')) {
+        <p class="field-error">{{ getErrorMessage('gender') }}</p>
+      }
+    </div>
+
+    <div class="form-field">
+      <label for="address">7. Address <span>*</span></label>
+      <textarea
+        id="address"
+        formControlName="address"
+        placeholder="Enter address"
+        rows="3"
+        [class.invalid]="isFieldInvalid('address')"
+      ></textarea>
+      @if (isFieldInvalid('address')) {
+        <p class="field-error">{{ getErrorMessage('address') }}</p>
+      }
+    </div>
+
+    <div class="form-field">
+      <label for="city">8. City <span>*</span></label>
+      <input
+        id="city"
+        type="text"
+        formControlName="city"
+        placeholder="Enter city"
+        [class.invalid]="isFieldInvalid('city')"
+      />
+      @if (isFieldInvalid('city')) {
+        <p class="field-error">{{ getErrorMessage('city') }}</p>
+      }
+    </div>
+
+    <div class="form-field">
+      <label for="state">9. State <span>*</span></label>
+      <select id="state" formControlName="state" [class.invalid]="isFieldInvalid('state')">
+        <option value="">Select state</option>
+        @for (state of indianStates; track state) {
+          <option [value]="state">{{ state }}</option>
+        }
+      </select>
+      @if (isFieldInvalid('state')) {
+        <p class="field-error">{{ getErrorMessage('state') }}</p>
+      }
+    </div>
+
+    <div class="form-field">
+      <label for="pincode">10. Pincode <span>*</span></label>
+      <input
+        id="pincode"
+        type="text"
+        formControlName="pincode"
+        placeholder="Enter pincode"
+        inputmode="numeric"
+        [class.invalid]="isFieldInvalid('pincode')"
+      />
+      @if (isFieldInvalid('pincode')) {
+        <p class="field-error">{{ getErrorMessage('pincode') }}</p>
+      }
+    </div>
+
+    @if (isEditMode) {
+      <div class="form-field">
+        <label for="status">Status <span>*</span></label>
+        <select id="status" formControlName="status" [class.invalid]="isFieldInvalid('status')">
+          @for (status of statusOptions; track status) {
+            <option [value]="status">{{ status === 'ACTIVE' ? 'Active' : 'Inactive' }}</option>
+          }
+        </select>
+        @if (isFieldInvalid('status')) {
+          <p class="field-error">{{ getErrorMessage('status') }}</p>
+        }
+      </div>
+    }
+  </div>
+
+  <div class="form-actions">
+    <button class="button button--primary" type="submit" [disabled]="isSaving">
+      @if (isSaving) {
+        <span class="spinner spinner--light" aria-hidden="true"></span>
+      } @else {
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M5 3h12l2 2v16H5V3Zm2 2v14h10V6.2L15.8 5H7Zm2 2h6v5H9V7Zm1 8h4v2h-4v-2Z" />
+        </svg>
+      }
+      {{ isEditMode ? 'Update' : 'Save' }}
+    </button>
+
+    <button class="button button--muted" type="button" [disabled]="isSaving" (click)="resetForm()">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 5a7 7 0 1 1-6.32 4H3l4-4 4 4H8.1A5 5 0 1 0 12 7V5Z" />
+      </svg>
+      Reset
+    </button>
+
+    <button class="button button--muted" type="button" [disabled]="isSaving" (click)="cancelForm()">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="m6.4 5 5.6 5.6L17.6 5 19 6.4 13.4 12l5.6 5.6-1.4 1.4-5.6-5.6L6.4 19 5 17.6l5.6-5.6L5 6.4 6.4 5Z" />
+      </svg>
+      Cancel
+    </button>
+  </div>
+</form>
