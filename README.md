@@ -149,7 +149,6 @@ Make sure the following software is installed:
 
 - Java 17
 - MySQL Server
-- Angular CLI : 21.2.18
 - Node.js : 24.14.1 or a compatible version
 - Npm : 11.11.0 or a compatible version
 - Git
