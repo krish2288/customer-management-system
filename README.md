@@ -171,8 +171,8 @@ Database settings are read from environment variables with local development def
 
 ```properties
 DB_URL=jdbc:mysql://localhost:3306/customer_management?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
-DB_USERNAME=root
-DB_PASSWORD=root
+DB_USERNAME=YOUR_DB_USERNAME
+DB_PASSWORD=YOUR_DB_PASSWORD
 ```
 
 Do not commit real production database credentials to the repository.
@@ -364,6 +364,4 @@ The Angular frontend does not generate Customer IDs.
 
 `customerId` is the primary identifier used for Get, Update, and Delete operations.
 
-## Author
 
-**Krish Singh**
