@@ -97,10 +97,7 @@ Customer Management/
 │   │   │   │   ├── validation/            # Custom Bean Validation annotations
 │   │   │   │   └── BackendApplication.java
 │   │   │   └── resources/
-│   │   │       ├── static/
-│   │   │       ├── templates/
-│   │   │       ├── application.properties # MySQL and JPA configuration
-│   │   │       └── schema.sql             # Database table initialization
+│   │   │       └── application.properties # MySQL and JPA configuration
 │   │   └── test/
 │   │       └── java/com/example/customermanagement/
 │   │           ├── service/
@@ -167,46 +164,51 @@ Default database name:
 customer_management
 ```
 
-Database settings are read from environment variables with local development defaults:
+Database credentials are provided securely through the `DB_USERNAME` and `DB_PASSWORD` environment variables instead of being hardcoded in the source code.
 
-```properties
-DB_URL=jdbc:mysql://localhost:3306/customer_management?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
-DB_USERNAME=YOUR_DB_USERNAME
-DB_PASSWORD=YOUR_DB_PASSWORD
-```
+Hibernate automatically creates and updates the required database tables based on the JPA entity mappings.
 
-Do not commit real production database credentials to the repository.
-
-The backend also includes `schema.sql`, which creates the required `customers` and `customer_id_sequence` tables if they do not already exist.
 
 ## Backend Setup Using IntelliJ IDEA
 
-1. Clone the repository.
-2. Open the `backend` folder in IntelliJ IDEA.
-3. Wait for Maven dependencies to load.
-4. Make sure Java 17 is configured as the Project SDK and Module SDK.
-5. Open `Run > Edit Configurations`.
-6. Create an Application Run Configuration if one does not already exist.
+1. Clone the repository and open the `backend` folder in IntelliJ IDEA.
 
-Use:
+2. Wait for IntelliJ IDEA to load the Maven project and download the required dependencies.
+
+3. Make sure Java 17 is configured as the Project SDK and Module SDK.
+
+4. Open:
 
 ```text
-Main Class:
-com.example.customermanagement.BackendApplication
-
-Module:
-backend
+Run > Edit Configurations
 ```
 
-7. Add environment variables if your MySQL credentials differ from the defaults:
+5. Create a new **Application** run configuration if one does not already exist.
+
+6. Configure the application:
+
+```text
+Main Class: com.example.customermanagement.BackendApplication
+Module: backend
+JRE: Java 17
+```
+
+7. Add your MySQL credentials under **Environment variables**:
 
 ```text
 DB_USERNAME=your_mysql_username
 DB_PASSWORD=your_mysql_password
 ```
 
+If the **Environment variables** field is not visible, select:
+
+```text
+Modify options > Environment variables
+```
+
 8. Make sure MySQL Server is running.
-9. Run `BackendApplication`.
+
+9. Click **Apply**, then **OK**, and run `BackendApplication`.
 
 The backend will start at:
 
@@ -224,7 +226,7 @@ Navigate to the backend directory:
 cd backend
 ```
 
-Optionally set your MySQL credentials:
+set your MySQL credentials:
 
 ```powershell
 $env:DB_USERNAME="your_mysql_username"
